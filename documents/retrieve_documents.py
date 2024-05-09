@@ -1,11 +1,10 @@
 
 from pathlib import Path
-from document import Document
 
-def retrieve_documents(start_path: str) -> list[Document]:
+def retrieve_documents(start_path: str) -> list[Path]:
     documents = []
     for path in Path(start_path).rglob('*.json'):
-        documents.append(path)
+        documents.append(Path(path))
 
     return documents
 
