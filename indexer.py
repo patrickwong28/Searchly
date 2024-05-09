@@ -12,12 +12,15 @@ def build_index(documents: list[Path]) -> dict:
     for document in documents:
         n = n + 1
 
+        # print log information
+        print(f'Doc #: {n} --> {document}')
+
         # decode json file
         with open(document) as f:
             data = json.load(f)
 
         # parse document
-        content =  data['content']
+        content = data['content']
         soup = BeautifulSoup(content, 'lxml')
         with open('current_page.txt', 'w+') as f:
             f.write(soup.text)
