@@ -49,3 +49,16 @@ def _is_alphanumeric(character: str) -> bool:
         return True
     else:
         return False
+
+def compute_word_frequency(token_list: list[str]) -> dict:
+    """
+    Returns the frequency of each token in the token list
+    """
+    word_frequency = {}
+    for token in token_list:
+        if token not in word_frequency:
+            word_frequency[token] = 1
+        else:
+            word_frequency[token] += 1
+    
+    return word_frequency
