@@ -1,6 +1,9 @@
 from pathlib import Path
 from bs4 import BeautifulSoup
 import json
+from parse import tokenize
+from porter2stemmer import Porter2Stemmer
+
 
 def build_index(documents: list[Path]) -> dict:
     inverted_index = {}
@@ -9,9 +12,17 @@ def build_index(documents: list[Path]) -> dict:
         n = n + 1
 
         # decode json file
-        json_file = open(document)
-        data = json.load(json_file)
+        with open(document) as f:
+            data = json.load(f)
 
         # parse document
+        content =  data['content']
+        soup = BeautifulSoup(content, 'html.parser')
+        with open('current_page.txt', 'w+') as f:
+            f.write(soup.text)
         
-        
+        tokens = tokenize('current_page.txt')
+        stemmer = Porter2Stemmer()
+        stemmed_tokens = set()
+        for token in tokens:
+            stemmed_tokens.add(stemmer.stem(token))
