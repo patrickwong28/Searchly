@@ -26,3 +26,19 @@ def build_index(documents: list[Path]) -> dict:
         stemmed_tokens = set()
         for token in tokens:
             stemmed_tokens.add(stemmer.stem(token))
+        
+        # TODO: wondering how we should create index to map
+        # index and urls for faster access - Justin Jue
+
+        # loop through tokens
+        for token in tokens:
+            pass
+            # if all token t is element of T do
+            #   i <-- List<Posting>()
+            # end if
+            # I.append(Posting(n))
+        # end for
+    # end for
+    # return I
+    # end procedure
+            
