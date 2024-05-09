@@ -7,7 +7,7 @@ def get_required_info(docs: list[Path], index: dict):
     number_of_documents = len(docs)
     unique_tokens = len(index)
     # TODO: uncomment the comments here when dictionary file dump is added
-    
+
     # total_size_bytes = os.path.getsize('index.json')
     # total_size_kb = total_size_bytes / 1024
 
@@ -17,7 +17,7 @@ def get_required_info(docs: list[Path], index: dict):
 
 
 if __name__ == '__main__':
-    file_path = input('Please provide the file path:')
+    file_path = input('Please provide the file path: ')
     docs = retrieve_documents(file_path)
     index = build_index(docs)
     get_required_info(docs, index)
