@@ -35,5 +35,7 @@ def build_index(documents: list[Path]) -> dict:
             if token not in inverted_index:
                 inverted_index[token] = []
             inverted_index[token].append(Posting(n, stemmed_token_frequency[token]))
+    
+    #TODO: Add file dump here in order to dump dictioary contents onto disk storage
 
     return inverted_index
