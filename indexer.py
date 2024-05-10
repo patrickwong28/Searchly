@@ -40,7 +40,7 @@ def build_index(documents: list[Path]) -> dict:
                 inverted_index[token] = []
             inverted_index[token].append(Posting(n, stemmed_token_frequency[token]))
     
-    #TODO: Add file dump here in order to dump dictioary contents onto disk storage
+    # dump contents of index into a file to store on disk instead of memory
     with open('index.pkl', 'wb') as f:
         pickle.dump(inverted_index, f)
 

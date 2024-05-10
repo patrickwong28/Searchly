@@ -6,8 +6,7 @@ import os
 def get_required_info(docs: list[Path], index: dict):
     number_of_documents = len(docs)
     unique_tokens = len(index)
-    # TODO: uncomment the comments here when dictionary file dump is added
-
+    
     total_size_bytes = os.path.getsize('index.pkl')
     total_size_kb = total_size_bytes / 1024
 
