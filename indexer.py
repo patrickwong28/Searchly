@@ -4,6 +4,7 @@ import json
 from parse import tokenize, compute_word_frequency
 from porter2stemmer import Porter2Stemmer
 from posting import Posting
+import pickle
 
 
 def build_index(documents: list[Path]) -> dict:
@@ -40,5 +41,7 @@ def build_index(documents: list[Path]) -> dict:
             inverted_index[token].append(Posting(n, stemmed_token_frequency[token]))
     
     #TODO: Add file dump here in order to dump dictioary contents onto disk storage
+    with open('index.pkl', 'wb') as f:
+        pickle.dump(inverted_index, f)
 
     return inverted_index

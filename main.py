@@ -8,12 +8,12 @@ def get_required_info(docs: list[Path], index: dict):
     unique_tokens = len(index)
     # TODO: uncomment the comments here when dictionary file dump is added
 
-    # total_size_bytes = os.path.getsize('index.json')
-    # total_size_kb = total_size_bytes / 1024
+    total_size_bytes = os.path.getsize('index.pkl')
+    total_size_kb = total_size_bytes / 1024
 
     print(f'Number of documents  -->  {number_of_documents}')
     print(f'Number of unique tokens  -->  {unique_tokens}')
-    # print(total_size_kb)
+    print(f'Total Size (KB)  -->  {total_size_kb}')
 
 
 if __name__ == '__main__':
