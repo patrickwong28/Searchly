@@ -20,7 +20,7 @@ Total Size (KB)  -->  252066.3720703125
 
 ## **How to Setup**
 Open your terminal and install the following libraries:  
-**BeautifulSoup** and **Porter2Stemmer**
+**BeautifulSoup**, **Porter2Stemmer**, and **lxml**
 
 To do this, use the following commands in terminal:  
 (**NOTE:** If on macOS, use pip3 instead of pip)
@@ -35,6 +35,12 @@ Porter2Stemmer:
 
 ```
 pip install porter2stemmer
+```
+
+lxml:
+
+```
+pip install lxml
 ```
 
 After installing both libraries, run the program from main.py and enter in a file path after being asked for an input.
