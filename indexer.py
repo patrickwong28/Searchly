@@ -12,7 +12,7 @@ def build_index(documents: list[Path]) -> dict:
     n = 0
 
     #URL mapping
-    with open('URL_mapping.txt', 'w') as f:
+    with open('URL_mapping.txt', 'w', encoding='utf-8') as f:
         pass
 
     for document in documents:
@@ -24,13 +24,13 @@ def build_index(documents: list[Path]) -> dict:
 
         # print log information and mapping to file
         print(f'Doc #: {n} --> {document}')
-        with open('URL_mapping.txt', 'a') as f:
+        with open('URL_mapping.txt', 'a', encoding='utf-8') as f:
             f.write(f"{n} - {data['url']}\n")
 
         # parse document
         content = data['content']
         soup = BeautifulSoup(content, 'lxml')
-        with open('current_page.txt', 'w+') as f:
+        with open('current_page.txt', 'w+', encoding='utf-8') as f:
             f.write(soup.text)
         
         tokens = tokenize('current_page.txt')
