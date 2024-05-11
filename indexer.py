@@ -10,15 +10,22 @@ import pickle
 def build_index(documents: list[Path]) -> dict:
     inverted_index = {}
     n = 0
+
+    #URL mapping
+    with open('URL_mapping.txt', 'w') as f:
+        pass
+
     for document in documents:
         n = n + 1
-
-        # print log information
-        print(f'Doc #: {n} --> {document}')
 
         # decode json file
         with open(document) as f:
             data = json.load(f)
+
+        # print log information and mapping to file
+        print(f'Doc #: {n} --> {document}')
+        with open('URL_mapping.txt', 'a') as f:
+            f.write(f"{n} - {data['url']}\n")
 
         # parse document
         content = data['content']

@@ -43,5 +43,11 @@ lxml:
 pip install lxml
 ```
 
-After installing both libraries, run the program from main.py and enter in a file path after being asked for an input.
+## **How to Use**
+Open up terminal and enter the command in the following layout:  
+**NOTE:** On macOS, use python3 instead of python  
 
+```
+python main.py [directory_path]
+```
+directory_path would be the directory you want to use in order for the program to sift through all the json files.

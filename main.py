@@ -2,6 +2,7 @@ from documents.retrieve_documents import retrieve_documents
 from indexer import build_index
 from pathlib import Path
 import os
+import sys
 
 def get_required_info(docs: list[Path], index: dict):
     number_of_documents = len(docs)
@@ -16,8 +17,18 @@ def get_required_info(docs: list[Path], index: dict):
 
 
 if __name__ == '__main__':
-    file_path = input('Please provide the file path: ')
-    docs = retrieve_documents(file_path)
-    index = build_index(docs)
-    get_required_info(docs, index)
+    try:
+        if len(sys.argv) != 2:
+            raise IndexError
+        file_path = sys.argv[1]
+        docs = retrieve_documents(file_path)
+        index = build_index(docs)
+        print(index)
+        get_required_info(docs, index)
+    except FileNotFoundError:
+        print('File not found!')
+    except IndexError:
+        print('Invalid amount of arguments!')
+    
+
 
