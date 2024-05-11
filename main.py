@@ -23,7 +23,6 @@ if __name__ == '__main__':
         file_path = sys.argv[1]
         docs = retrieve_documents(file_path)
         index = build_index(docs)
-        print(index)
         get_required_info(docs, index)
     except FileNotFoundError:
         print('File not found!')
