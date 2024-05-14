@@ -10,8 +10,12 @@ def run_interface():
         split_query = filter_words(query)
     
         if len(split_query) == 1:
-            merge_result = inverted_index[split_query[0]]
-            merge_ids = map(lambda x: str(x.docid), merge_result)
+            try:
+                merge_result = inverted_index[split_query[0]]
+            except KeyError:
+                merge_result = []
+            merge_ids = list(map(lambda x: str(x.docid), merge_result))
+            print(merge_ids)
 
             with open('URL_mapping.txt', 'r') as f:
                 while True:
