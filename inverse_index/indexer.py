@@ -1,9 +1,9 @@
 from pathlib import Path
 from bs4 import BeautifulSoup
 import json
-from parse import tokenize, compute_word_frequency
+from inverse_index.parse import tokenize, compute_word_frequency
 from porter2stemmer import Porter2Stemmer
-from posting import Posting
+from inverse_index.posting import Posting
 import pickle
 
 
@@ -47,6 +47,10 @@ def build_index(documents: list[Path]) -> dict:
                 inverted_index[token] = []
             inverted_index[token].append(Posting(n, stemmed_token_frequency[token]))
     
+    # sort the index values for faster retrieval later
+    for value in inverted_index.values():
+        value.sort(key = lambda x: x.docid)
+
     # dump contents of index into a file to store on disk instead of memory
     with open('index.pkl', 'wb') as f:
         pickle.dump(inverted_index, f)

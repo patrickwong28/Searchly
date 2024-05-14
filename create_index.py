@@ -1,5 +1,5 @@
-from documents.retrieve_documents import retrieve_documents
-from indexer import build_index
+from inverse_index.documents.retrieve_documents import retrieve_documents
+from inverse_index.indexer import build_index
 from pathlib import Path
 import os
 import sys

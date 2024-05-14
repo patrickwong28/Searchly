@@ -48,6 +48,6 @@ Open up terminal and enter the command in the following layout:
 **NOTE:** On macOS, use python3 instead of python  
 
 ```
-python main.py [directory_path]
+python create_index.py [directory_path]
 ```
 directory_path would be the directory you want to use in order for the program to sift through all the json files.
