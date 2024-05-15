@@ -4,55 +4,100 @@ import json
 from inverse_index.parse import tokenize, compute_word_frequency
 from porter2stemmer import Porter2Stemmer
 from inverse_index.posting import Posting
-import pickle
 
 
 def build_index(documents: list[Path]) -> dict:
     inverted_index = {}
     n = 0
+    batch_of_documents = []
+    batch_size = (len(documents) // 3) + 1
+    batch_names = ['./inverse_index/indexes/index_a', './inverse_index/indexes/index_b', './inverse_index/indexes/index_c']
+    batch_number = 0
 
     #URL mapping
     with open('URL_mapping.txt', 'w', encoding='utf-8') as f:
         pass
 
-    for document in documents:
-        n = n + 1
+    while len(documents) != 0:
+        batch_of_documents = get_batch(documents, batch_size)
 
-        # decode json file
-        with open(document) as f:
-            data = json.load(f)
+        # create partial index file
+        with open(batch_names[batch_number], 'w+') as f:
+            pass
 
-        # print log information and mapping to file
-        print(f'Doc #: {n} --> {document}')
-        with open('URL_mapping.txt', 'a', encoding='utf-8') as f:
-            f.write(f"{n} - {data['url']}\n")
+        for document in batch_of_documents:
+            n = n + 1
 
-        # parse document
-        content = data['content']
-        soup = BeautifulSoup(content, 'lxml')
-        with open('current_page.txt', 'w+', encoding='utf-8') as f:
-            f.write(soup.text)
-        
-        tokens = tokenize('current_page.txt')
-        stemmer = Porter2Stemmer()
-        stemmed_tokens = []
-        for token in tokens:
-            stemmed_tokens.append(stemmer.stem(token))
-        
-        stemmed_token_frequency =  compute_word_frequency(stemmed_tokens)
+            # decode json file
+            with open(document) as f:
+                data = json.load(f)
 
-        # loop through tokens
-        for token in stemmed_token_frequency.keys():
-            if token not in inverted_index:
-                inverted_index[token] = []
-            inverted_index[token].append(Posting(n, stemmed_token_frequency[token]))
-    
-    # sort the index values for faster retrieval later
-    for value in inverted_index.values():
-        value.sort(key = lambda x: x.docid)
+            # print log information and mapping to file
+            print(f'Doc #: {n} --> {document}')
+            with open('URL_mapping.txt', 'a', encoding='utf-8') as f:
+                f.write(f"{n} - {data['url']}\n")
 
-    # dump contents of index into a file to store on disk instead of memory
-    with open('index.pkl', 'wb') as f:
-        pickle.dump(inverted_index, f)
+            # parse document
+            content = data['content']
+            soup = BeautifulSoup(content, 'lxml')
+            with open('current_page.txt', 'w+', encoding='utf-8') as f:
+                f.write(soup.text)
+            
+            tokens = tokenize('current_page.txt')
+            stemmer = Porter2Stemmer()
+            stemmed_tokens = []
+            for token in tokens:
+                stemmed_tokens.append(stemmer.stem(token))
+            
+            stemmed_token_frequency =  compute_word_frequency(stemmed_tokens)
+
+            # loop through tokens
+            for token in stemmed_token_frequency.keys():
+                if token not in inverted_index:
+                    inverted_index[token] = []
+                inverted_index[token].append(Posting(n, stemmed_token_frequency[token]))
+
+        sort_and_write_to_disk(inverted_index ,batch_names[batch_number])
+        batch_number += 1
+        inverted_index = {}
 
     return inverted_index
+
+
+def get_batch(documents: list[Path], size: int):
+    document_chunk = []
+
+    for i in range(size):
+        if len(documents) == 0:
+            return document_chunk
+        else:
+            document_chunk.append(documents.pop())
+    return document_chunk
+    
+
+def postings_str(postings: list[Posting]) -> str:
+
+    posting_string = ''
+    for posting in postings:
+        posting_string += f'({posting.docid}; {posting.frequency}), '
+    
+    # remove lsat comma and space if exists
+    if len(posting_string) != 0:
+        posting_string = posting_string[:-2]
+    
+    return posting_string
+    
+
+def sort_and_write_to_disk(index: dict, name_of_file):
+    # sort the index values for faster retrieval later
+    for value in index.values():
+        value.sort(key = lambda x: x.docid)
+    
+    # writing to disk
+    with open(name_of_file, 'a') as f:
+        for key, value in index.items():
+            f.write(f'{key} --> ')
+            f.write(postings_str(value))
+            f.write('\n')
+
+        
