@@ -1,13 +1,21 @@
-from search.merge import merge
+from search.intersect import merge
 import pickle
+from porter2stemmer import Porter2Stemmer
 
 def run_interface():
     with open('index.pkl', 'rb') as f:
         inverted_index = pickle.load(f)
 
+
     while True:
-        query = input('Query: ')
-        split_query = filter_words(query)
+        query = input('Query: ').lower()
+        query_list = filter_words(query)
+        split_query = []
+
+        stemmer = Porter2Stemmer()
+        for word in query_list:
+            split_query.append(stemmer.stem(word))
+
     
         if len(split_query) == 1:
             try:
