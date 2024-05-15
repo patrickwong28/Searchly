@@ -57,7 +57,7 @@ def build_index(documents: list[Path]) -> dict:
                     inverted_index[token] = []
                 inverted_index[token].append(Posting(n, stemmed_token_frequency[token]))
 
-        sort_and_write_to_disk(inverted_index ,batch_names[batch_number])
+        sort_and_write_to_disk(inverted_index, batch_names[batch_number])
         batch_number += 1
         inverted_index = {}
 
@@ -89,10 +89,12 @@ def postings_str(postings: list[Posting]) -> str:
     
 
 def sort_and_write_to_disk(index: dict, name_of_file):
-    # sort the index values for faster retrieval later
+    # first sort the index values for faster retrieval later
     for value in index.values():
         value.sort(key = lambda x: x.docid)
-    
+
+    # now sort the terms for merging partial indexes later
+    index = dict(sorted(index.items()))
     # writing to disk
     with open(name_of_file, 'a') as f:
         for key, value in index.items():
