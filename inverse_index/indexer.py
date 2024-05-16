@@ -15,7 +15,7 @@ def build_index(documents: list[Path]) -> dict:
     batch_number = 0
 
     #URL mapping
-    with open('URL_mapping.txt', 'w', encoding='utf-8') as f:
+    with open('./inverse_index/mappings/URL_mapping.txt', 'w', encoding='utf-8') as f:
         pass
 
     while len(documents) != 0:
@@ -34,16 +34,16 @@ def build_index(documents: list[Path]) -> dict:
 
             # print log information and mapping to file
             print(f'Doc #: {n} --> {document}')
-            with open('URL_mapping.txt', 'a', encoding='utf-8') as f:
+            with open('./inverse_index/mappings/URL_mapping.txt', 'a', encoding='utf-8') as f:
                 f.write(f"{n} - {data['url']}\n")
 
             # parse document
             content = data['content']
             soup = BeautifulSoup(content, 'lxml')
-            with open('current_page.txt', 'w+', encoding='utf-8') as f:
+            with open('./inverse_index/current_page.txt', 'w+', encoding='utf-8') as f:
                 f.write(soup.text)
             
-            tokens = tokenize('current_page.txt')
+            tokens = tokenize('./inverse_index/current_page.txt')
             stemmer = Porter2Stemmer()
             stemmed_tokens = []
             for token in tokens:

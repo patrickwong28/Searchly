@@ -1,5 +1,5 @@
 def map_byte_offsets(index_file: str):
-    with open(index_file, 'r') as f, open('./inverse_index/index_offsets.txt', 'w+') as output:
+    with open(index_file, 'r') as f, open('./inverse_index/mappings/index_offsets.txt', 'w+') as output:
         current_byte_offset = 0
         while True:
             line = f.readline()
