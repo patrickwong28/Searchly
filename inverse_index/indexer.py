@@ -25,7 +25,7 @@ def build_index(documents: list[Path]) -> dict:
         batch_of_documents = get_batch(documents, batch_size)
 
         # create partial index file
-        with open(batch_names[batch_number], 'w+') as f:
+        with open(batch_names[batch_number], 'w+', encoding='utf-8') as f:
             pass
 
         for document in batch_of_documents:
@@ -97,7 +97,7 @@ def sort_and_write_to_disk(index: dict, name_of_file):
     # now sort the terms for merging partial indexes later
     index = dict(sorted(index.items()))
     # writing to disk
-    with open(name_of_file, 'a') as f:
+    with open(name_of_file, 'a', encoding='utf-8') as f:
         for key, value in index.items():
             f.write(f'{key} --> ')
             f.write(postings_str(value))

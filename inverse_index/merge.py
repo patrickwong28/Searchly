@@ -5,7 +5,7 @@ def merge(index_one: str, index_two: str, chunk_size_mb: int):
     f1_remaining_chunk = ''
     f2_remaining_chunk = ''
 
-    with open(index_one, 'r') as f1, open(index_two, 'r') as f2, open(output_name, 'w+') as output:
+    with open(index_one, 'r', encoding='utf-8') as f1, open(index_two, 'r', encoding='utf-8') as f2, open(output_name, 'w+', encoding='utf-8') as output:
         f1_index = 0
         f2_index = 0
         f1_chunk_list, f1_remaining_chunk = build_chunk(f1.read(chunk_size_mb),f1_remaining_chunk)

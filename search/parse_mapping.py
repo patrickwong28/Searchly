@@ -1,6 +1,6 @@
 def parse_mapping(mapping_file):
     result = {}
-    with open(mapping_file, 'r') as f:
+    with open(mapping_file, 'r', encoding='utf-8') as f:
         while True:
             line = f.readline()
             if not line:
