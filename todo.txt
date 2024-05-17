@@ -1,0 +1,18 @@
+Things to still do:
+-----------------------------------
+INDEX PORTION:
+    - clean up merge functino in index by making functions to break it down
+    - remember to remove previous indexes after merging
+    - somehow not completing sorting the term values in index (need to fix)
+    - make decision to use nltk tokenzier or our own tokenizer
+    - break down indexer into more functions (maybe?)
+
+QUERY PORTION:
+    - Only boolean search implemented right now, need ranked search
+    - implement positions
+    - implement tfid ranking
+
+BOTH:
+    - need to add tons of comments on all files for explanation
+    - need to update README.md to make an in depth tutorial on how to use
+
