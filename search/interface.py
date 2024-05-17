@@ -1,42 +1,57 @@
 from search.intersect import merge
-import pickle
 from porter2stemmer import Porter2Stemmer
+from inverse_index.posting import Posting
+from search.parse_mapping import parse_mapping
 
 def run_interface():
-    with open('index.pkl', 'rb') as f:
-        inverted_index = pickle.load(f)
-
+    # load URL mapping and byte offset mapping and store them in dictionaries
+    url_map = parse_mapping('./inverse_index/mappings/URL_mapping.txt')
+    offset_map = parse_mapping('./inverse_index/mappings/index_offsets.txt')
 
     while True:
         query = input('Query: ').lower()
         query_list = filter_words(query)
-        split_query = []
 
-        stemmer = Porter2Stemmer()
-        for word in query_list:
-            split_query.append(stemmer.stem(word))
-
-    
-        if len(split_query) == 1:
-            try:
-                merge_result = inverted_index[split_query[0]]
-            except KeyError:
-                merge_result = []
-            merge_ids = list(map(lambda x: str(x.docid), merge_result))
-            print(merge_ids)
-
-            with open('URL_mapping.txt', 'r') as f:
-                while True:
+        try:
+            fetched_results = []
+            with open('./inverse_index/indexes/index_abc', 'r') as f:
+                for word in query_list:
+                    f.seek(int(offset_map[word]))
                     line = f.readline()
-                    if not line:
-                        break
-                    if line.startswith(tuple(merge_ids)):
-                        print(line)
-        print()
+                    values = line.split(' --> ')[1]
+                    fetched_results.append(build_postings(values))
+                fetched_results.sort(key=lambda x: len(x))
+        except KeyError:
+            continue
+        
+        merged_results = fetched_results[0]
+        for i in range(1, len(fetched_results)):
+            merged_results = merge(merged_results, fetched_results[i])
+       
+        print_results(merged_results, url_map)
+
+        
+        
+        
+
+def build_postings(index_string) -> list[Posting]:
+    posting_list = []
+    string_list = index_string.strip().split(', ')
+    for value in string_list:
+        #[1:-1] to remove parentheses
+        attributes = value[1:-1].split('; ')
+        posting_list.append(Posting(int(attributes[0]), int(attributes[1])))
+
+    return posting_list
 
 def filter_words(query: str):
-    query_list = query.split()
-    return query_list
+    result = []
+    query_split = query.split()
+    stemmer = Porter2Stemmer()
+    for word in query_split:
+        result.append(stemmer.stem(word))
+    return result
 
-def print_results():
-    pass
+def print_results(results: list[Posting], url_mapping: dict):
+    for result in results:
+        print(url_mapping[str(result.docid)], end='')
