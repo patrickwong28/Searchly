@@ -61,8 +61,6 @@ def build_index(documents: list[Path]) -> dict:
         batch_number += 1
         inverted_index = {}
 
-    return inverted_index
-
 
 def get_batch(documents: list[Path], size: int):
     document_chunk = []

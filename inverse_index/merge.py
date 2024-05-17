@@ -18,10 +18,8 @@ def merge(index_one: str, index_two: str, chunk_size_mb: int):
             f2_index = 0
 
             while f1_index < len(f1_chunk_list) and f2_index < len(f2_chunk_list):
-                f1_piece_key = f1_chunk_list[f1_index][0]
-                f2_piece_key =  f2_chunk_list[f2_index][0]
-                f1_piece_values = f1_chunk_list[f1_index][1]
-                f2_piece_values = f2_chunk_list[f2_index][1]
+                f1_piece_key, f1_piece_values = f1_chunk_list[f1_index]
+                f2_piece_key, f2_piece_values =  f2_chunk_list[f2_index]
 
                 if f1_piece_key == f2_piece_key:
                     merged_values = f1_piece_values + f2_piece_values
@@ -45,12 +43,14 @@ def merge(index_one: str, index_two: str, chunk_size_mb: int):
             # now check for which chunk ended first, then append the rest of the other one
             if f1_index >= len(f1_chunk_list):
                 while f2_index < len(f2_chunk_list):
+                    f2_piece_key, f2_piece_values = f2_chunk_list[f2_index]
                     output.write(f'{f2_piece_key} --> ')
                     output.write(f'{convert_string(f2_piece_values)}')
                     output.write(f'\n')
                     f2_index += 1
             elif f2_index >= len(f2_chunk_list):
                 while f1_index < len(f1_chunk_list):
+                    f1_piece_key, f1_piece_values = f1_chunk_list[f1_index]
                     output.write(f'{f1_piece_key} --> ')
                     output.write(f'{convert_string(f1_piece_values)}')
                     output.write(f'\n')
