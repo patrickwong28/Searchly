@@ -1,7 +1,7 @@
 from pathlib import Path
 from bs4 import BeautifulSoup
 import json
-from inverse_index.parse import compute_word_frequency
+from inverse_index.frequency import compute_word_frequency
 from porter2stemmer import Porter2Stemmer
 from inverse_index.posting import Posting
 import nltk
