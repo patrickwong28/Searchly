@@ -1,9 +1,11 @@
 from pathlib import Path
 from bs4 import BeautifulSoup
 import json
-from inverse_index.parse import tokenize, compute_word_frequency
+from inverse_index.parse import compute_word_frequency
 from porter2stemmer import Porter2Stemmer
 from inverse_index.posting import Posting
+import nltk
+import re
 
 
 def build_index(documents: list[Path]) -> dict:
@@ -13,6 +15,7 @@ def build_index(documents: list[Path]) -> dict:
     batch_size = (len(documents) // 3) + 1
     batch_names = ['./inverse_index/indexes/index_a', './inverse_index/indexes/index_b', './inverse_index/indexes/index_c']
     batch_number = 0
+    nltk.download('punkt')
 
     #URL mapping
     with open('./inverse_index/mappings/URL_mapping.txt', 'w', encoding='utf-8') as f:
@@ -40,10 +43,10 @@ def build_index(documents: list[Path]) -> dict:
             # parse document
             content = data['content']
             soup = BeautifulSoup(content, 'lxml')
+            text = re.sub(r'[^A-Za-z0-9 ]+', ' ', soup.text.lower())
             with open('./inverse_index/current_page.txt', 'w+', encoding='utf-8') as f:
-                f.write(soup.text)
-            
-            tokens = tokenize('./inverse_index/current_page.txt')
+                f.write(text)
+            tokens = nltk.word_tokenize(text)
             stemmer = Porter2Stemmer()
             stemmed_tokens = []
             for token in tokens:

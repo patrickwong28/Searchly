@@ -6,16 +6,33 @@ def merge(index_one: str, index_two: str, chunk_size_mb: int):
     f2_remaining_chunk = ''
 
     with open(index_one, 'r') as f1, open(index_two, 'r') as f2, open(output_name, 'w+') as output:
+        f1_index = 0
+        f2_index = 0
+        f1_chunk_list, f1_remaining_chunk = build_chunk(f1.read(chunk_size_mb),f1_remaining_chunk)
+        f2_chunk_list, f2_remaining_chunk = build_chunk(f2.read(chunk_size_mb),f2_remaining_chunk)
+
         # convert bytes to megabytes
         while True:
-            f1_chunk_list, f1_remaining_chunk = build_chunk(f1.read(chunk_size_mb),f1_remaining_chunk)
-            f2_chunk_list, f2_remaining_chunk = build_chunk(f2.read(chunk_size_mb),f2_remaining_chunk)
-
             if not f1_chunk_list and not f2_chunk_list:
                 break
+            
+            if f1_chunk_list and not f2_chunk_list:
+                while f1_index < len(f1_chunk_list):
+                    f1_piece_key, f1_piece_values = f1_chunk_list[f1_index]
+                    output.write(f'{f1_piece_key} --> ')
+                    output.write(f'{convert_string(f1_piece_values)}')
+                    output.write(f'\n')
+                    f1_index += 1
+                    break
 
-            f1_index = 0
-            f2_index = 0
+            if not f1_chunk_list and f2_chunk_list:
+                while f2_index < len(f2_chunk_list):
+                    f2_piece_key, f2_piece_values = f2_chunk_list[f2_index]
+                    output.write(f'{f2_piece_key} --> ')
+                    output.write(f'{convert_string(f2_piece_values)}')
+                    output.write(f'\n')
+                    f2_index += 1
+                    break
 
             while f1_index < len(f1_chunk_list) and f2_index < len(f2_chunk_list):
                 f1_piece_key, f1_piece_values = f1_chunk_list[f1_index]
@@ -40,21 +57,14 @@ def merge(index_one: str, index_two: str, chunk_size_mb: int):
                     output.write(f'\n')
                     f2_index += 1
                     
-            # now check for which chunk ended first, then append the rest of the other one
             if f1_index >= len(f1_chunk_list):
-                while f2_index < len(f2_chunk_list):
-                    f2_piece_key, f2_piece_values = f2_chunk_list[f2_index]
-                    output.write(f'{f2_piece_key} --> ')
-                    output.write(f'{convert_string(f2_piece_values)}')
-                    output.write(f'\n')
-                    f2_index += 1
-            elif f2_index >= len(f2_chunk_list):
-                while f1_index < len(f1_chunk_list):
-                    f1_piece_key, f1_piece_values = f1_chunk_list[f1_index]
-                    output.write(f'{f1_piece_key} --> ')
-                    output.write(f'{convert_string(f1_piece_values)}')
-                    output.write(f'\n')
-                    f1_index += 1
+                f1_chunk_list, f1_remaining_chunk = build_chunk(f1.read(chunk_size_mb),f1_remaining_chunk)
+                f1_index = 0
+
+            if f2_index >= len(f2_chunk_list):
+                f2_chunk_list, f2_remaining_chunk = build_chunk(f2.read(chunk_size_mb),f2_remaining_chunk)
+                f2_index = 0
+
 
 
 def build_chunk(current_chunk, previous_incomplete_chunk: str) -> tuple[list[tuple], str]:

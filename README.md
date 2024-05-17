@@ -43,6 +43,12 @@ lxml:
 pip install lxml
 ```
 
+nltk:
+
+```
+pip install nltk
+```
+
 ## **How to Use**
 Open up terminal and enter the command in the following layout:  
 **NOTE:** On macOS, use python3 instead of python  
