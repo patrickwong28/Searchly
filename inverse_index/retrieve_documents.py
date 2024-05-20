@@ -1,4 +1,3 @@
-
 from pathlib import Path
 
 def retrieve_documents(start_path: str) -> list[Path]:

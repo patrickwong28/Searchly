@@ -4,6 +4,7 @@ import json
 from inverse_index.frequency import compute_word_frequency
 from porter2stemmer import Porter2Stemmer
 from inverse_index.posting import Posting
+from inverse_index.utils.conversion import postings_to_str
 import nltk
 import re
 
@@ -74,20 +75,7 @@ def get_batch(documents: list[Path], size: int):
         else:
             document_chunk.append(documents.pop())
     return document_chunk
-    
 
-def postings_str(postings: list[Posting]) -> str:
-
-    posting_string = ''
-    for posting in postings:
-        posting_string += f'({posting.docid}; {posting.frequency}), '
-    
-    # remove lsat comma and space if exists
-    if len(posting_string) != 0:
-        posting_string = posting_string[:-2]
-    
-    return posting_string
-    
 
 def sort_and_write_to_disk(index: dict, name_of_file):
     # first sort the index values for faster retrieval later
@@ -100,7 +88,5 @@ def sort_and_write_to_disk(index: dict, name_of_file):
     with open(name_of_file, 'a', encoding='utf-8') as f:
         for key, value in index.items():
             f.write(f'{key} --> ')
-            f.write(postings_str(value))
+            f.write(postings_to_str(value))
             f.write('\n')
-
-        
