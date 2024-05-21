@@ -14,7 +14,7 @@ def build_index(documents: list[Path]) -> dict:
     n = 0
     batch_of_documents = []
     batch_size = (len(documents) // 3) + 1
-    batch_names = ['./inverse_index/indexes/index_a', './inverse_index/indexes/index_b', './inverse_index/indexes/index_c']
+    batch_names = ['./inverse_index/indexes/index_a.txt', './inverse_index/indexes/index_b.txt', './inverse_index/indexes/index_c.txt']
     batch_number = 0
     nltk.download('punkt')
 
@@ -78,7 +78,7 @@ def get_batch(documents: list[Path], size: int):
     return document_chunk
 
 
-def sort_and_write_to_disk(index: dict, name_of_file):
+def sort_and_write_to_disk(index: dict, name_of_file: str):
     # first sort the index values for faster retrieval later
     for value in index.values():
         value.sort(key = lambda x: x.docid)

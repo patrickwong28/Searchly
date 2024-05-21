@@ -19,9 +19,9 @@ if __name__ == '__main__':
 
         docs = retrieve_documents(file_path)
         build_index(docs)
-        merge('./inverse_index/indexes/index_a', './inverse_index/indexes/index_b', 10)
-        merge('./inverse_index/indexes/index_ab', './inverse_index/indexes/index_c', 10)
-        map_byte_offsets('./inverse_index/indexes/index_abc')
+        merge('./inverse_index/indexes/index_a.txt', './inverse_index/indexes/index_b.txt', 10)
+        merge('./inverse_index/indexes/index_ab.txt', './inverse_index/indexes/index_c.txt', 10)
+        map_byte_offsets('./inverse_index/indexes/index_abc.txt')
     except FileNotFoundError:
         print('File not found!')
     except IndexError:

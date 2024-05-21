@@ -8,5 +8,3 @@ if __name__ == '__main__':
         run_interface()
     except FileNotFoundError:
         print('File not found!')
-    except IndexError:
-        print('Invalid amount of arguments!')

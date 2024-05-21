@@ -18,7 +18,6 @@ def str_to_postings(string: str) -> list[Posting]:
 
 
 def postings_to_str(postings: list[Posting]) -> str:
-
     posting_string = ''
     for posting in postings:
         position_str = ''

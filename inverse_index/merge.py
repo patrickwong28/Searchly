@@ -3,7 +3,9 @@ from inverse_index.posting import Posting
 
 def merge(index_one: str, index_two: str, chunk_size_mb: int):
     # get the alphabetical number at the end of each index name
-    output_name = './inverse_index/indexes/index_' + index_one[30:] + index_two[30:]
+    output_name = './inverse_index/indexes/index_' + index_one[30:-4] + index_two[30:-4] +'.txt'
+    
+    # converts bytes to megabytes
     chunk_size_mb = chunk_size_mb * 1024 * 1024
     f1_remaining_chunk = ''
     f2_remaining_chunk = ''
@@ -14,7 +16,7 @@ def merge(index_one: str, index_two: str, chunk_size_mb: int):
         f1_chunk_list, f1_remaining_chunk = build_chunk(f1.read(chunk_size_mb),f1_remaining_chunk)
         f2_chunk_list, f2_remaining_chunk = build_chunk(f2.read(chunk_size_mb),f2_remaining_chunk)
 
-        # convert bytes to megabytes
+
         while True:
             if not f1_chunk_list and not f2_chunk_list:
                 break
