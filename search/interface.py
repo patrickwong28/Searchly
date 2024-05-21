@@ -2,6 +2,7 @@ from search.intersect import merge
 from porter2stemmer import Porter2Stemmer
 from inverse_index.posting import Posting
 from search.parse_mapping import parse_mapping
+from inverse_index.utils.conversion import str_to_postings
 import time
 
 def run_interface():
@@ -24,7 +25,7 @@ def run_interface():
                     f.seek(int(offset_map[word]))
                     line = f.readline()
                     values = line.split(' --> ')[1]
-                    fetched_results.append(build_postings(values))
+                    fetched_results.append(str_to_postings(values))
                 fetched_results.sort(key=lambda x: len(x))
                 merged_results = fetched_results[0]
                 for i in range(1, len(fetched_results)):
@@ -35,18 +36,6 @@ def run_interface():
         print_results(merged_results, url_map)
         print(f'Total query execution time: {int((time.time() - start_time) * 1000)} ms')
         
-        
-        
-
-def build_postings(index_string) -> list[Posting]:
-    posting_list = []
-    string_list = index_string.strip().split(', ')
-    for value in string_list:
-        #[1:-1] to remove parentheses
-        attributes = value[1:-1].split('; ')
-        posting_list.append(Posting(int(attributes[0]), int(attributes[1])))
-
-    return posting_list
 
 def filter_words(query: str):
     result = []

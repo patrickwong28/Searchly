@@ -4,10 +4,10 @@ def str_to_postings(string: str) -> list[Posting]:
     postings = []
     value_list = string.split(', ')
     for value in value_list:
-        # remove parentheses
-        value = value[1:-1]
+        # remove parentheses and trailing \n operator
+        value = value.strip().strip('()')
         attributes = value.split('; ')
-
+        
         # convert positions to an actual list
         position_list = [int(i) for i in attributes[2].split(',')]
 
