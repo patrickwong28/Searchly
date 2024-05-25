@@ -1,7 +1,7 @@
-from search.intersect import merge
+from search.utils.intersect import merge
 from porter2stemmer import Porter2Stemmer
 from inverse_index.posting import Posting
-from search.parse_mapping import parse_mapping
+from search.utils.parse_mapping import parse_mapping
 from inverse_index.utils.conversion import str_to_postings
 import time
 
@@ -20,12 +20,13 @@ def run_interface():
 
         try:
             fetched_results = []
-            with open('./inverse_index/indexes/index_abc.txt', 'r', encoding='utf-8') as f:
+            with open('./inverse_index/indexes/index_final.txt', 'r', encoding='utf-8') as f:
                 for word in query_list:
                     f.seek(int(offset_map[word]))
                     line = f.readline()
                     values = line.split(' --> ')[1]
                     fetched_results.append(str_to_postings(values))
+                
                 fetched_results.sort(key=lambda x: len(x))
                 merged_results = fetched_results[0]
                 for i in range(1, len(fetched_results)):
@@ -33,6 +34,7 @@ def run_interface():
         except KeyError:
             merged_results = []
         
+
         print_results(merged_results, url_map)
         print(f'Total query execution time: {int((time.time() - start_time) * 1000)} ms')
         

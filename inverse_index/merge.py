@@ -3,6 +3,7 @@ from inverse_index.posting import Posting
 
 def merge(index_one: str, index_two: str, chunk_size_mb: int):
     # get the alphabetical number at the end of each index name
+    # [30:-4] to only retrieve the letters of index file name
     output_name = './inverse_index/indexes/index_' + index_one[30:-4] + index_two[30:-4] +'.txt'
     
     # converts bytes to megabytes
@@ -60,6 +61,7 @@ def merge(index_one: str, index_two: str, chunk_size_mb: int):
                 f2_chunk_list, f2_remaining_chunk = build_chunk(f2.read(chunk_size_mb),f2_remaining_chunk)
                 f2_index = 0
 
+    print(f'Merge of {output_name} completed.')
 
 
 def build_chunk(current_chunk, previous_incomplete_chunk: str) -> tuple[list[Posting], str]:
