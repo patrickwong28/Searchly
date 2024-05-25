@@ -1,5 +1,6 @@
 from inverse_index.utils.conversion import str_to_postings, postings_to_str
 from math import log10
+import os
 
 def compute_word_frequency(token_list: list[str]) -> dict:
     """
@@ -44,5 +45,7 @@ def compute_tf_idf(index_file, output):
             output.write(f'{key} --> ')
             output.write(f'{postings_to_str(postings)}')
             output.write(f'\n')
-    
+
+    # remove used index
+    os.remove(index_file)
     print('tf-idf scores calculations completed.')

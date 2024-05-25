@@ -1,5 +1,6 @@
 from inverse_index.utils.conversion import str_to_postings, postings_to_str
 from inverse_index.posting import Posting
+import os
 
 def merge(index_one: str, index_two: str, chunk_size_mb: int):
     # get the alphabetical number at the end of each index name
@@ -61,6 +62,10 @@ def merge(index_one: str, index_two: str, chunk_size_mb: int):
                 f2_chunk_list, f2_remaining_chunk = build_chunk(f2.read(chunk_size_mb),f2_remaining_chunk)
                 f2_index = 0
 
+    # remove partial indexes after merge
+    os.remove(index_one)
+    os.remove(index_two)
+    
     print(f'Merge of {output_name} completed.')
 
 

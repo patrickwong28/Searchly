@@ -24,7 +24,7 @@ if __name__ == '__main__':
         merge('./inverse_index/indexes/index_a.txt', './inverse_index/indexes/index_b.txt', 10)
         merge('./inverse_index/indexes/index_ab.txt', './inverse_index/indexes/index_c.txt', 10)
         compute_tf_idf('./inverse_index/indexes/index_abc.txt', './inverse_index/indexes/index_final.txt')
-        map_byte_offsets('./inverse_index/indexes/index_abc.txt')
+        map_byte_offsets('./inverse_index/indexes/index_final.txt')
         
     except FileNotFoundError:
         print('File not found!')
