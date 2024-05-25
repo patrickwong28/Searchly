@@ -5,6 +5,7 @@ from inverse_index.utils.compute_attributes import compute_word_frequency, compu
 from porter2stemmer import Porter2Stemmer
 from inverse_index.posting import Posting
 from inverse_index.utils.conversion import postings_to_str
+from math import log10
 import nltk
 import re
 
@@ -60,7 +61,8 @@ def build_index(documents: list[Path]) -> dict:
             for token in stemmed_token_frequency.keys():
                 if token not in inverted_index:
                     inverted_index[token] = []
-                inverted_index[token].append(Posting(n, stemmed_token_frequency[token], stemmed_token_positions[token]))
+                tf_idf = 1 + log10(stemmed_token_frequency[token])
+                inverted_index[token].append(Posting(n, stemmed_token_frequency[token], stemmed_token_positions[token], tf_idf))
 
         sort_and_write_to_disk(inverted_index, batch_names[batch_number])
         batch_number += 1

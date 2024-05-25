@@ -1,7 +1,6 @@
 from inverse_index.retrieve_documents import retrieve_documents
 from inverse_index.indexer import build_index
 from inverse_index.merge import merge
-from inverse_index.utils.compute_attributes import compute_tf_idf
 from inverse_index.byte_mapping import map_byte_offsets
 import sys
 import os
@@ -23,8 +22,7 @@ if __name__ == '__main__':
         
         merge('./inverse_index/indexes/index_a.txt', './inverse_index/indexes/index_b.txt', 10)
         merge('./inverse_index/indexes/index_ab.txt', './inverse_index/indexes/index_c.txt', 10)
-        compute_tf_idf('./inverse_index/indexes/index_abc.txt', './inverse_index/indexes/index_final.txt')
-        map_byte_offsets('./inverse_index/indexes/index_final.txt')
+        map_byte_offsets('./inverse_index/indexes/index_abc.txt')
         
     except FileNotFoundError:
         print('File not found!')

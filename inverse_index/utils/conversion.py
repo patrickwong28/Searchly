@@ -11,7 +11,7 @@ def str_to_postings(string: str) -> list[Posting]:
         # convert positions to an actual list
         position_list = [int(i) for i in attributes[2].split(',')]
 
-        posting = Posting(int(attributes[0]), int(attributes[1]), position_list, int(attributes[3]))
+        posting = Posting(int(attributes[0]), int(attributes[1]), position_list, float(attributes[3]))
         postings.append(posting)
 
     return postings

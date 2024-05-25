@@ -20,7 +20,7 @@ def run_interface():
 
         try:
             fetched_results = []
-            with open('./inverse_index/indexes/index_final.txt', 'r', encoding='utf-8') as f:
+            with open('./inverse_index/indexes/index_abc.txt', 'r', encoding='utf-8') as f:
                 for word in query_list:
                     f.seek(int(offset_map[word]))
                     line = f.readline()
