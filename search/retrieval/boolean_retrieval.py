@@ -21,8 +21,7 @@ def boolean_retrieval(index_mapping, query_dict) -> dict:
             for i in range(len(fetched_results)):
                 merged_results, merge_dict = merge(merged_results, postings_list[i], merge_dict)
     except KeyError:
-        merged_results = []
         term_ordering = []
         merge_dict = {}
 
-    return merged_results, merge_dict, term_ordering
+    return merge_dict, term_ordering
