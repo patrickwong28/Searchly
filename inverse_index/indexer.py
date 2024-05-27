@@ -46,8 +46,6 @@ def build_index(documents: list[Path]) -> dict:
             content = data['content']
             soup = BeautifulSoup(content, 'lxml')
             text = re.sub(r'[^A-Za-z0-9 ]+', ' ', soup.text.lower())
-            with open('./inverse_index/current_page.txt', 'w+', encoding='utf-8') as f:
-                f.write(text)
             tokens = nltk.word_tokenize(text)
             stemmer = Porter2Stemmer()
             stemmed_tokens = []
