@@ -1,7 +1,7 @@
 from pathlib import Path
 from bs4 import BeautifulSoup
 import json
-from inverse_index.utils.compute_attributes import compute_word_frequency, compute_position
+from inverse_index.utils.compute_attributes import compute_word_frequency, compute_position, compute_doc_length
 from porter2stemmer import Porter2Stemmer
 from inverse_index.posting import Posting
 from inverse_index.utils.conversion import postings_to_str
@@ -55,12 +55,14 @@ def build_index(documents: list[Path]) -> dict:
 
             stemmed_token_positions = compute_position(stemmed_tokens)
             stemmed_token_frequency =  compute_word_frequency(stemmed_tokens)
+            doc_length = compute_doc_length(stemmed_token_frequency)
+
             # loop through tokens
             for token in stemmed_token_frequency.keys():
                 if token not in inverted_index:
                     inverted_index[token] = []
                 tf_idf = 1 + log10(stemmed_token_frequency[token])
-                inverted_index[token].append(Posting(n, stemmed_token_frequency[token], stemmed_token_positions[token], tf_idf))
+                inverted_index[token].append(Posting(n, stemmed_token_frequency[token], stemmed_token_positions[token], tf_idf, doc_length))
 
         sort_and_write_to_disk(inverted_index, batch_names[batch_number])
         batch_number += 1

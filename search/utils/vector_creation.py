@@ -35,10 +35,10 @@ def create_document_vector(document: list[Posting]):
     for posting in document:
         weight = posting.tf_idf
         weight_vector.append(weight)
-        doc_length += exp2(weight)
+        doc_length = posting.doc_length
     
     # normalize weight vector
-    doc_length = sqrt(doc_length)
+    
     if doc_length != 0:
         result_vector = [weight / doc_length for weight in weight_vector]
     
