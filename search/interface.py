@@ -19,8 +19,8 @@ def run_interface():
 
         # measure execution time
         start_time = time.time()
-        query_dict = create_query_dict(query)
-        remove_common_query_terms(query_dict, length_map)
+        unmodified_query_dict = create_query_dict(query)
+        query_dict = remove_common_query_terms(unmodified_query_dict, length_map)
   
         if len(query_dict) != 0:
             merged_documents_dict, term_ordering = boolean_retrieval(offset_map, query_dict)
@@ -46,10 +46,22 @@ def create_query_dict(query: str):
     return result
 
 def remove_common_query_terms(query_dict: dict, length_map: dict):
-    for term in list(query_dict.keys()):
+    new_query_dict = {}
+    for term in query_dict.keys():
         if term in length_map:
-            if int(length_map[term]) > 8000:
-                del query_dict[term]
+            # if term exists in index, check to see if a lot of documents have that term
+            if int(length_map[term]) < 8000:
+                new_query_dict[term] = query_dict[term]
+        else:
+            new_query_dict[term] = query_dict[term]
+    
+    # check to see if common words make up 75% of the query and if it does, we don't remove them
+    if (1 - (len(new_query_dict) / len(query_dict))) > 0.75:
+        return query_dict
+    else:
+        return new_query_dict
+        
+            
 
 def print_results(results: list[int], url_mapping: dict):
     for result in results:
