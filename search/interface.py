@@ -24,7 +24,6 @@ def run_interface():
   
         if len(query_dict) != 0:
             merged_documents_dict, term_ordering = boolean_retrieval(offset_map, query_dict)
-            print(len(merged_documents_dict))
             
             if len(merged_documents_dict) != 0:
                 query_vector = create_query_vector(offset_map, query_dict, term_ordering, len(url_map))
@@ -49,7 +48,7 @@ def create_query_dict(query: str):
 def remove_common_query_terms(query_dict: dict, length_map: dict):
     for term in list(query_dict.keys()):
         if term in length_map:
-            if int(length_map[term]) > 8000000:
+            if int(length_map[term]) > 8000:
                 del query_dict[term]
 
 def print_results(results: list[int], url_mapping: dict):
