@@ -19,7 +19,7 @@ def build_index(documents: list[Path]) -> dict:
     batch_number = 0
     nltk.download('punkt')
 
-    #URL mapping
+    # create URL mapping file
     with open('./inverse_index/mappings/URL_mapping.txt', 'w', encoding='utf-8') as f:
         pass
 
@@ -45,24 +45,42 @@ def build_index(documents: list[Path]) -> dict:
             # parse document
             content = data['content']
             soup = BeautifulSoup(content, 'lxml')
-            text = re.sub(r'[^A-Za-z0-9 ]+', ' ', soup.text.lower())
-            tokens = nltk.word_tokenize(text)
             stemmer = Porter2Stemmer()
-            stemmed_tokens = []
-            for token in tokens:
-                current_token = stemmer.stem(token)
-                stemmed_tokens.append(current_token)
 
-            stemmed_token_positions = compute_position(stemmed_tokens)
-            stemmed_token_frequency =  compute_word_frequency(stemmed_tokens)
+            # grab title words (or all heading 1)
+            title_text = ''
+            for tags in soup.find_all('h1'):
+                title_text += tags.text
+            title_stemmed_tokens = create_stemmed_tokens(title_text, stemmer)
+
+            # grab bold words and all headings other than heading 1
+            important_text = ''
+            for tags in soup.find_all(['h2', 'h3', 'h4', 'h5', 'h6', 'b']):
+                important_text += tags.text
+            important_stemmed_tokens = create_stemmed_tokens(important_text, stemmer)
+
+            # grab regular text
+            regular_text = soup.text
+            stemmed_tokens = create_stemmed_tokens(regular_text, stemmer)
+
+            # computer frequency for all of our text
+            title_token_frequency = compute_word_frequency(title_stemmed_tokens)
+            important_token_frequency = compute_word_frequency(important_stemmed_tokens)
+            stemmed_token_frequency = compute_word_frequency(stemmed_tokens)
+
+            # get doc length before merging important text weighting (so we are using "true" frequency)
             doc_length = compute_doc_length(stemmed_token_frequency)
 
-            # loop through tokens
+            # merge all frequencies into one with unique weighting depending on importance
+            merge_frequency_dicts(stemmed_token_frequency, title_token_frequency, 4),
+            merge_frequency_dicts(stemmed_token_frequency, important_token_frequency, 2)
+
+            # loop through tokens and create postings
             for token in stemmed_token_frequency.keys():
                 if token not in inverted_index:
                     inverted_index[token] = []
                 tf_idf = 1 + log10(stemmed_token_frequency[token])
-                inverted_index[token].append(Posting(n, stemmed_token_frequency[token], stemmed_token_positions[token], tf_idf, doc_length))
+                inverted_index[token].append(Posting(n, stemmed_token_frequency[token], tf_idf, doc_length))
 
         sort_and_write_to_disk(inverted_index, batch_names[batch_number])
         batch_number += 1
@@ -93,3 +111,20 @@ def sort_and_write_to_disk(index: dict, name_of_file: str):
             f.write(f'{key} --> ')
             f.write(postings_to_str(value))
             f.write('\n')
+
+
+def merge_frequency_dicts(main_dict, other_dict, weight=1):
+    for key in other_dict.keys():
+        if key in main_dict and key in other_dict:
+            main_dict[key] += other_dict[key] * weight
+
+
+def create_stemmed_tokens(text, stemmer):
+    cleaned_text = re.sub(r'[^A-Za-z0-9 ]+', ' ', text.lower())
+    tokens = nltk.word_tokenize(cleaned_text)
+    stemmed_tokens = []
+    for token in tokens:
+        current_token = stemmer.stem(token)
+        stemmed_tokens.append(current_token)
+
+    return stemmed_tokens

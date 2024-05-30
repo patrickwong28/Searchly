@@ -8,10 +8,7 @@ def str_to_postings(string: str) -> list[Posting]:
         value = value.strip().strip('()')
         attributes = value.split('; ')
         
-        # convert positions to an actual list
-        position_list = [int(i) for i in attributes[2].split(',')]
-
-        posting = Posting(int(attributes[0]), int(attributes[1]), position_list, float(attributes[3]), float(attributes[4]))
+        posting = Posting(int(attributes[0]), int(attributes[1]), float(attributes[2]), float(attributes[3]))
         postings.append(posting)
 
     return postings
@@ -19,14 +16,8 @@ def str_to_postings(string: str) -> list[Posting]:
 
 def postings_to_str(postings: list[Posting]) -> str:
     posting_string = ''
-    for posting in postings:
-        position_str = ''
-        for position in posting.positions:
-            position_str += f'{position},'
-        if len(position_str) != 0:
-            position_str = position_str[:-1]
-            
-        posting_string += f'({posting.docid}; {posting.frequency}; {position_str}; {posting.tf_idf}; {posting.doc_length}), '
+    for posting in postings:  
+        posting_string += f'({posting.docid}; {posting.frequency}; {posting.tf_idf}; {posting.doc_length}), '
 
     # remove last comma and space if exists
     if len(posting_string) != 0:
