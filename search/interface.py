@@ -15,7 +15,7 @@ def run_interface():
     length_map = parse_mapping('./inverse_index/mappings/index_lengths.txt')
 
     while True:
-        query = input('Query: ').lower()
+        query = input('>>> ').lower()
 
         # measure execution time
         start_time = time.time()
@@ -24,6 +24,7 @@ def run_interface():
   
         if len(query_dict) != 0:
             merged_documents_dict, term_ordering = boolean_retrieval(offset_map, query_dict)
+            print(f'Total documents found: {len(merged_documents_dict)}')
             
             if len(merged_documents_dict) != 0:
                 query_vector = create_query_vector(offset_map, query_dict, term_ordering, len(url_map))
@@ -64,5 +65,7 @@ def remove_common_query_terms(query_dict: dict, length_map: dict):
             
 
 def print_results(results: list[int], url_mapping: dict):
+    count = 1
     for result in results:
-        print(url_mapping[str(result)], end='')
+        print(f'#{count}: {url_mapping[str(result)]}', end='')
+        count += 1
