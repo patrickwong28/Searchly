@@ -29,7 +29,7 @@ def run_interface():
             if len(merged_documents_dict) != 0:
                 query_vector, query_lengths = create_query_vector(offset_map, query_dict, term_ordering, len(url_map))
                 top_documents =  document_at_a_time_retrieval(query_vector, query_lengths, merged_documents_dict, len(url_map), 10)
-                print(top_documents)
+                
                 top_docids = [score_document_pair[1] for score_document_pair in top_documents]
                 print_results(top_docids, url_map)
             
