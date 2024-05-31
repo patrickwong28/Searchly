@@ -6,6 +6,8 @@ from porter2stemmer import Porter2Stemmer
 from inverse_index.posting import Posting
 from inverse_index.utils.conversion import postings_to_str
 from math import log10
+from inverse_index.utils.simHash import simhash, hash_similarity
+from urllib.parse import urlparse
 import nltk
 import re
 
@@ -17,6 +19,8 @@ def build_index(documents: list[Path]) -> dict:
     batch_size = (len(documents) // 3) + 1
     batch_names = ['./inverse_index/indexes/index_a.txt', './inverse_index/indexes/index_b.txt', './inverse_index/indexes/index_c.txt']
     batch_number = 0
+    simhashes = []
+    current_domain = ''
     nltk.download('punkt')
 
     # create URL mapping file
@@ -31,21 +35,42 @@ def build_index(documents: list[Path]) -> dict:
             pass
 
         for document in batch_of_documents:
-            n = n + 1
-
             # decode json file
             with open(document) as f:
                 data = json.load(f)
+            
+            # parse document
+            content = data['content']
+            soup = BeautifulSoup(content, 'lxml')
+            stemmer = Porter2Stemmer()
 
+            # near similarity detection
+            current_simhash = simhash(soup.text)
+            similarity_detected = False
+            for simhash_value in simhashes:
+                if hash_similarity(current_simhash, simhash_value) >= 0.97:
+                    similarity_detected = True
+                    break
+            if similarity_detected:
+                print('Similar document detected, skipping current doc...')
+                continue            
+            
+            # check to see if we've moved onto a new domain type. If so, we clear the current simhashes
+            domain = urlparse(data['url']).netloc
+            if domain != current_domain:
+                simhashes = []
+                current_domain = domain
+
+            # add simhash to list of simhashes
+            simhashes.append(current_simhash)
+            
+            # if not similar, continue with regular index code
+            n = n + 1
             # print log information and mapping to file
             print(f'Doc #: {n} --> {document}')
             with open('./inverse_index/mappings/URL_mapping.txt', 'a', encoding='utf-8') as f:
                 f.write(f"{n} - {data['url']}\n")
 
-            # parse document
-            content = data['content']
-            soup = BeautifulSoup(content, 'lxml')
-            stemmer = Porter2Stemmer()
 
             # grab title words (or all heading 1)
             title_text = ''
@@ -72,8 +97,8 @@ def build_index(documents: list[Path]) -> dict:
             doc_length = compute_doc_length(stemmed_token_frequency)
 
             # merge all frequencies into one with unique weighting depending on importance
-            merge_frequency_dicts(stemmed_token_frequency, title_token_frequency, 4),
-            merge_frequency_dicts(stemmed_token_frequency, important_token_frequency, 2)
+            merge_frequency_dicts(stemmed_token_frequency, title_token_frequency, 2),
+            merge_frequency_dicts(stemmed_token_frequency, important_token_frequency, 1)
 
             # loop through tokens and create postings
             for token in stemmed_token_frequency.keys():

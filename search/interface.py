@@ -50,7 +50,7 @@ def remove_common_query_terms(query_dict: dict, length_map: dict):
     for term in query_dict.keys():
         if term in length_map:
             # if term exists in index, check to see if a lot of documents have that term
-            if int(length_map[term]) < 8000:
+            if int(length_map[term]) < 15000:
                 new_query_dict[term] = query_dict[term]
         else:
             new_query_dict[term] = query_dict[term]
