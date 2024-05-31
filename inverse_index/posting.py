@@ -1,5 +1,5 @@
 class Posting:
-    def __init__(self, docid: int, frequency: int, tf_idf: float, doc_length: float) -> None:
+    def __init__(self, docid: int, frequency: int, tf_idf: float, doc_length: float):
         self.docid = docid
         self.frequency = frequency
         self.tf_idf = tf_idf

@@ -2,7 +2,7 @@ from inverse_index.utils.conversion import str_to_postings
 from math import sqrt, log10
 from inverse_index.posting import Posting
 
-def create_query_vector(index_mapping, query_dict, query_ordering, number_of_documents):
+def create_query_vector(index_mapping: dict, query_dict: dict, query_ordering: list[str], number_of_documents: int) -> tuple[list[float], list[int]]:
     weight_vector = []
     doc_length = 0
 
@@ -28,9 +28,11 @@ def create_query_vector(index_mapping, query_dict, query_ordering, number_of_doc
     return result_vector, query_lengths
 
 
-def create_document_vector(documents: list[Posting]):
+def create_document_vector(documents: list[Posting]) -> list[float]:
     weight_vector = []
     doc_length = 0
+
+    # create weight_vector
     for posting in documents:
         weight = posting.tf_idf
         weight_vector.append(weight)

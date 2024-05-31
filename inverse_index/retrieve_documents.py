@@ -6,5 +6,3 @@ def retrieve_documents(start_path: str) -> list[Path]:
         documents.append(Path(path))
 
     return documents
-
-

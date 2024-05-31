@@ -1,4 +1,4 @@
-def map_byte_offsets(index_file: str):
+def map_byte_offsets(index_file: str) -> None:
     with open(index_file, 'rb') as f, open('./inverse_index/mappings/index_offsets.txt', 'w+', encoding='utf-8') as output:
         current_byte_offset = 0
         while True:
@@ -13,3 +13,5 @@ def map_byte_offsets(index_file: str):
             
             # since in a txt file, every character is a single byte, we can get length of line
             current_byte_offset += len(line)
+            
+    print(f'Byte mapping of {index_file} finished.')

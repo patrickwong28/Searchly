@@ -1,9 +1,6 @@
 from math import sqrt, log10
 
 def compute_word_frequency(token_list: list[str]) -> dict:
-    """
-    Returns the frequency of each token in the token list
-    """
     word_frequency = {}
     for token in token_list:
         if token not in word_frequency:

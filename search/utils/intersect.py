@@ -1,5 +1,5 @@
 from inverse_index.posting import Posting
-def merge(query1_postings: list[Posting], query2_postings: list[Posting], prev_merge_dict: dict) -> list[Posting]:
+def merge(query1_postings: list[Posting], query2_postings: list[Posting], prev_merge_dict: dict) -> tuple[list[Posting], dict]:
     result = []
     new_merge_dict = {}
     query1_index = 0
@@ -8,9 +8,12 @@ def merge(query1_postings: list[Posting], query2_postings: list[Posting], prev_m
     while query1_index < len(query1_postings) and query2_index < len(query2_postings):
         query1_posting = query1_postings[query1_index]
         query2_posting = query2_postings[query2_index]
+
+        # if both query postings have the same doc in them
         if query1_posting.docid == query2_posting.docid:
             result.append(query1_postings[query1_index])
 
+            # keep track of the term postings for every docid
             if query1_posting.docid not in new_merge_dict:
                 new_merge_dict[query1_posting.docid] = []       
             new_merge_dict[query1_posting.docid].append(query2_posting)
@@ -22,6 +25,7 @@ def merge(query1_postings: list[Posting], query2_postings: list[Posting], prev_m
         else:
             query2_index += 1
 
+    # append all of the old merge dictionary with the new one
     if len(prev_merge_dict) != 0:
         for docid in new_merge_dict.keys():
             if docid in prev_merge_dict:

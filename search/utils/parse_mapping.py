@@ -1,4 +1,4 @@
-def parse_mapping(mapping_file):
+def parse_mapping(mapping_file: str) -> dict:
     result = {}
     with open(mapping_file, 'r', encoding='utf-8') as f:
         while True:

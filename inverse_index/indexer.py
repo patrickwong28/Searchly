@@ -112,7 +112,7 @@ def build_index(documents: list[Path]) -> dict:
         inverted_index = {}
 
 
-def get_batch(documents: list[Path], size: int):
+def get_batch(documents: list[Path], size: int) -> list[Path]:
     document_chunk = []
 
     for i in range(size):
@@ -123,7 +123,7 @@ def get_batch(documents: list[Path], size: int):
     return document_chunk
 
 
-def sort_and_write_to_disk(index: dict, name_of_file: str):
+def sort_and_write_to_disk(index: dict, name_of_file: str) -> None:
     # first sort the index values for faster retrieval later
     for value in index.values():
         value.sort(key = lambda x: x.docid)
@@ -138,13 +138,13 @@ def sort_and_write_to_disk(index: dict, name_of_file: str):
             f.write('\n')
 
 
-def merge_frequency_dicts(main_dict, other_dict, weight=1):
+def merge_frequency_dicts(main_dict: dict, other_dict: dict, weight=1) -> None:
     for key in other_dict.keys():
         if key in main_dict and key in other_dict:
             main_dict[key] += other_dict[key] * weight
 
 
-def create_stemmed_tokens(text, stemmer):
+def create_stemmed_tokens(text: str, stemmer: Porter2Stemmer) -> list[str]:
     cleaned_text = re.sub(r'[^A-Za-z0-9 ]+', ' ', text.lower())
     tokens = nltk.word_tokenize(cleaned_text)
     stemmed_tokens = []
