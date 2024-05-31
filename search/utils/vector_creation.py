@@ -1,5 +1,5 @@
 from inverse_index.utils.conversion import str_to_postings
-from math import sqrt, exp2, log10
+from math import sqrt, log10
 from inverse_index.posting import Posting
 
 def create_query_vector(index_mapping, query_dict, query_ordering, number_of_documents):
@@ -19,12 +19,11 @@ def create_query_vector(index_mapping, query_dict, query_ordering, number_of_doc
                 weight = (1 + log10(query_dict[query])) * (log10(number_of_documents / postings_length))
                 weight_vector.append(weight)
 
-                doc_length += exp2(weight)
+                doc_length += (weight ** 2)
     
     # normalize weight vector
     doc_length = sqrt(doc_length)
-    if doc_length != 0:
-        result_vector = [weight / doc_length for weight in weight_vector]
+    result_vector = [weight / doc_length for weight in weight_vector]
 
     return result_vector, query_lengths
 
@@ -38,10 +37,8 @@ def create_document_vector(documents: list[Posting]):
         doc_length = posting.doc_length
     
     # normalize weight vector
-    
-    if doc_length != 0:
-        result_vector = [weight / doc_length for weight in weight_vector]
-    
+    result_vector = [weight / doc_length for weight in weight_vector]
+        
     return result_vector
     
 

@@ -4,9 +4,8 @@ from math import log10
 
 def calculate_relevance_score(query_vector: list[float], query_lengths: list[int], documents:list[Posting], number_of_documents: int):
     cosine_score = calculate_cosine_score(query_vector, documents)
-    tfidf_score = calculate_tfidf_score(documents, query_lengths, number_of_documents)
     
-    relevance_score = tfidf_score + cosine_score
+    relevance_score = cosine_score
     return relevance_score
 
 

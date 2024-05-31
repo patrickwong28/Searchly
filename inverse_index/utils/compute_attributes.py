@@ -1,4 +1,4 @@
-from math import exp2, sqrt, log10
+from math import sqrt, log10
 
 def compute_word_frequency(token_list: list[str]) -> dict:
     """
@@ -28,7 +28,7 @@ def compute_doc_length(frequency_dict: dict) -> float:
     doc_length = 0
     for value in frequency_dict.values():
         tf_weighted = 1 + log10(value)
-        doc_length += exp2(tf_weighted)
+        doc_length += (tf_weighted ** 2)
 
     doc_length = sqrt(doc_length)
 
