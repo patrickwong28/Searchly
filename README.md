@@ -60,7 +60,7 @@ Flask:
 pip install Flask
 ```
 
-To setup your virtual environment for Flask, open your terminal and enter the following command:
+To setup your virtual environment for Flask, open your terminal and enter the following command:  
 **NOTE:** On macOS, use python3 instead of python
 ```
 python -m venv <path>
