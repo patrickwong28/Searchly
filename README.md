@@ -23,7 +23,26 @@ Total query execution time: 33 ms
 ```
 
 ---
+## **Setting Up Your Virtual Environment**
+For the installation found later in this document, it might make sense to create a virtual envrionment to install all the needed add ons.  
+To setup your virtual environment, open your terminal and enter the following command:  
+**NOTE:** On macOS, use python3 instead of python
+```
+python -m venv <path>
+```
 
+Enter the following command to run your virtual environment:  
+Windows:
+```
+.\venv\Scripts\activate
+```
+
+MacOS:
+```
+source \venv\bin\activate
+```
+
+---
 ## **How to Setup**
 Open your terminal and install the following libraries:  
 **BeautifulSoup**, **Porter2Stemmer**, **lxml**, **nltk** and **Flask**
@@ -60,12 +79,6 @@ Flask:
 pip install Flask
 ```
 
-To setup your virtual environment for Flask, open your terminal and enter the following command:  
-**NOTE:** On macOS, use python3 instead of python
-```
-python -m venv <path>
-```
-
 ---
 
 ## **How to Use**
@@ -96,18 +109,7 @@ Simply type any query you want in this, and it will output the top 10 highest ra
 Once you are done, you can type 'q' within the search input and it will end the program.
 
 ### **Query Search for Web UI**
-Open your terminal and enter the following command to run your virtual environment:
-Windows:
-```
-.\venv\Scripts\activate
-```
-
-MacOS:
-```
-source \venv\bin\activate
-```
-
-Once the virtual environment is running, enter the follow command:  
+Enter the follow command in terminal:  
 **NOTE**: Again, if you are on macOS, use python3 instead of python
 ```
 python query_web.py
