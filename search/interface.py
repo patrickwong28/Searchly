@@ -64,7 +64,11 @@ def run_interface_web(user_query: str):
                 result.append(url_map[str(docs)])
             
             execution_time = (time.time() - start_time) * 1000
-            return result, execution_time
+
+            if result is None:
+                return []
+                
+            return (result, execution_time)
         
 
 def create_query_dict(query: str) -> dict:

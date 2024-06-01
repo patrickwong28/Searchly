@@ -6,19 +6,29 @@ app = Flask(__name__)
 
 @app.route('/', methods=['POST', 'GET'])
 def home():
-    if request.method == 'POST':
-        query = request.form['query']
-    else:
-        return render_template('index.html')
+    while True:
+        if request.method == 'POST':
+            query = request.form['query']
+            if len(query) < 1:
+                continue
+            else:
+                break
+        else:
+            return render_template('index.html')
 
     try:
         if len(sys.argv) != 1:
             raise IndexError
-        results, execution_time = run_interface_web(query)
+        results = run_interface_web(query)
     except FileNotFoundError:
         print('File not found!')
 
-    return render_template('index.html', results=results, time=execution_time)
+    if results is None:
+        return render_template('index.html', results=[])
+    else:
+        top_urls = results[0]
+        execution_time = results[1]
+        return render_template('index.html', results=top_urls, time=execution_time)
 
 
 if __name__ == '__main__':

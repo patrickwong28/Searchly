@@ -27,8 +27,9 @@
                         <li class="list-item">{{ result }}</li>
                     {% endfor %}
                 </ul>
-        
                 <p>Total Query Execution Time: {{ time }} ms</p>
+            {% else %}
+                <h1 class="results-title">Results Couldn't Be Found...</h1>
             {% endif %}
         </div>
     </div>
