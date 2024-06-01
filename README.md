@@ -26,7 +26,7 @@ Total query execution time: 33 ms
 
 ## **How to Setup**
 Open your terminal and install the following libraries:  
-**BeautifulSoup**, **Porter2Stemmer**, and **lxml**
+**BeautifulSoup**, **Porter2Stemmer**, **lxml**, and **nltk**
 
 To do this, use the following commands in terminal:  
 (**NOTE:** If on macOS, use pip3 instead of pip)
