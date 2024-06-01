@@ -26,7 +26,7 @@ Total query execution time: 33 ms
 
 ## **How to Setup**
 Open your terminal and install the following libraries:  
-**BeautifulSoup**, **Porter2Stemmer**, **lxml**, and **nltk**
+**BeautifulSoup**, **Porter2Stemmer**, **lxml**, **nltk** and **Flask**
 
 To do this, use the following commands in terminal:  
 (**NOTE:** If on macOS, use pip3 instead of pip)
@@ -54,6 +54,18 @@ nltk:
 ```
 pip install nltk
 ```
+
+Flask:
+```
+pip install Flask
+```
+
+To setup your virtual environment for Flask, open your terminal and enter the following command:
+**NOTE:** On macOS, use python3 instead of python
+```
+python -m venv <path>
+```
+
 ---
 
 ## **How to Use**
@@ -82,3 +94,21 @@ Enter q to quit searching.
 ```
 Simply type any query you want in this, and it will output the top 10 highest ranking documents of that query.  
 Once you are done, you can type 'q' within the search input and it will end the program.
+
+### **Query Search for Web UI**
+Open your terminal and enter the following command to run your virtual environment:
+Windows:
+```
+.\venv\Scripts\activate
+```
+
+MacOS:
+```
+source \venv\bin\activate
+```
+
+Once the virtual environment is running, enter the follow command:
+**NOTE**: Again, if you are on macOS, use python3 instead of python
+```
+python query_web.py
+```
