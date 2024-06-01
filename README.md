@@ -1,4 +1,5 @@
 # COMPSCI 121 Assignment 3 Milestone 1
+### Created by Justin Jue, Patring Wong, Senghoung Lim, Justin Woo
 
 ## **Program Summary**
 The following program allows you to construct an inverted index off of a given folder from your computer that contains json files of websites. After the creation of this index, you will be able to query the results and get the top 10 highest ranking documents for that said query search. 
