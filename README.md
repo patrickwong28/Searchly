@@ -86,7 +86,7 @@ Open up terminal if you don't already have that open and enter the command in th
 python query.py
 ```
 
-Afterwards, you are then greeted with is output:  
+Afterwards, you are then greeted with this output:  
 
 ```
 Enter q to quit searching.
@@ -107,8 +107,22 @@ MacOS:
 source \venv\bin\activate
 ```
 
-Once the virtual environment is running, enter the follow command:
+Once the virtual environment is running, enter the follow command:  
 **NOTE**: Again, if you are on macOS, use python3 instead of python
 ```
 python query_web.py
 ```
+
+Afterwards, you are the greeted with this output:
+```
+ * Serving Flask app 'query_web'
+ * Debug mode: on
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on http://127.0.0.1:5000
+Press CTRL+C to quit
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 114-176-628
+```
+To open the Web UI, ctrl + click on the locally hosted server http://127.0.0.1:5000. A new tab should be opened on your web browser displaying the following website:
+
