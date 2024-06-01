@@ -1,4 +1,4 @@
-# COMPSCI 121 Assignment 3 Milestone 1
+# COMPSCI 121 Assignment 3
 ### Created by Justin Jue, Patrick Wong, Senghoung Lim, Justin Woo
 
 ## **Program Summary**
