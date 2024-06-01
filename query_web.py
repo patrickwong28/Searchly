@@ -1,20 +1,17 @@
 from search.interface import run_interface_web
 import sys
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 
 app = Flask(__name__)
 
 @app.route('/', methods=['POST', 'GET'])
 def home():
-    while True:
-        if request.method == 'POST':
-            query = request.form['query']
-            if len(query) < 1:
-                continue
-            else:
-                break
-        else:
-            return render_template('index.html')
+    if request.method == 'POST':
+        query = request.form['query']
+        if len(query) < 1:
+            return redirect(url_for('home'))
+    else:
+        return render_template('index.html')
 
     try:
         if len(sys.argv) != 1:
