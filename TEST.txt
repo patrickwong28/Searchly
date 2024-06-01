@@ -4,7 +4,13 @@ Good Queries
 Query 1: cristina lopes
 Query 2: uci
 Query 3: AI
-
+Query 4: simple query
+Query 5: UCI CS courses
+Query 6: construction
+Query 7: UCI irvine ICS advisor
+Query 8: Professor chen li
+Query 9: How to apply to ICS honor program at UCI
+Query 10: professor wong ma
 
 
 -=-=-=-=-=-=-=-
